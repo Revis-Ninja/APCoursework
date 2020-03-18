@@ -5,8 +5,10 @@ import java.util.Scanner;
 
 public class Writer implements Runnable {
     private Socket socket;
+    private player p;
 
-    public Writer(Socket socket){
+    public Writer(Socket socket, player p){
+        this.p = p;
         this.socket = socket;
     }
 
@@ -20,12 +22,28 @@ public class Writer implements Runnable {
                 String line = sc.nextLine();
                 os.write(line + '\n');
                 os.flush();
-                if (line.equals("END")){
+                if (line.equals("A")){
+
+                    Thread readCardThread = new Thread(new ReadCard(socket,p));
+                    System.out.println("This is your extra card: ");
+                    readCardThread.start();
+                    try {
+                        readCardThread.join();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println("A: Add one more card");
+                    System.out.println("B: No more card");
+                    os.flush();
+
+                }
+
+                if (line.equals("B")){
+                    System.out.println("Your turn is over");
                     break;
                 }
+
             }
-            sc.close();
-            os.close();
         }catch(IOException e) {
             e.printStackTrace();
         }

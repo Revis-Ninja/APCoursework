@@ -5,8 +5,10 @@ import java.net.Socket;
 public class WriteCard implements Runnable {
 
     private Socket socket;
+    private banker b;
 
-    public WriteCard(Socket socket){
+    public WriteCard(Socket socket, banker b){
+        this.b = b;
         this.socket = socket;
     }
     @Override
@@ -15,11 +17,12 @@ public class WriteCard implements Runnable {
 
             ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
 
-            System.out.println("This is your card: ");
+            System.out.println("one card is dealt");
 
-                os.writeObject(banker.deck.pop());
+            os.writeObject(b.dealOneCard());
+            os.writeObject(null);
+            os.flush();
 
-            os.close();
         }catch(IOException e) {
             e.printStackTrace();
         }

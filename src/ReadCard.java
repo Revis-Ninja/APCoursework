@@ -5,9 +5,11 @@ import java.net.Socket;
 public class ReadCard implements Runnable {
 
     private Socket socket;
+    private player p;
 
-    public ReadCard(Socket socket){
+    public ReadCard(Socket socket, player p){
         this.socket = socket;
+        this.p = p;
     }
 
     @Override
@@ -17,8 +19,9 @@ public class ReadCard implements Runnable {
             card Card;
             while((Card = (card) sc.readObject())!=null) {
                 Card.print();
+                p.getOneMore(Card);
             }
-            sc.close();
+
         }catch(ClassNotFoundException | IOException e) {
             e.printStackTrace();
         }

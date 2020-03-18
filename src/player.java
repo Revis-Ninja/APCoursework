@@ -1,7 +1,4 @@
-import java.io.*;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.Stack;
 
 public class player extends Thread implements java.io.Serializable{
     card card1 = new card("");
@@ -11,13 +8,10 @@ public class player extends Thread implements java.io.Serializable{
     card card5 = new card("");
     card[] handcards = new card[3];
     static int handCount = 0;
-    boolean dealState = true;
 
     private final transient Socket socket;
 
     public player(Socket socket){
-        //banker.dealer.dealCard(this);
-
         this.socket = socket;
         handcards[0]=card3;
         handcards[1]=card4;
@@ -45,23 +39,16 @@ public class player extends Thread implements java.io.Serializable{
     @Override
     public void run() {
         System.out.println(socket);
-
+        System.out.println("Game starts. These are your hand cards");
         this.showCard();
-        Thread writeThread = new Thread(new Writer(this.socket));
+        System.out.println("A: Add one more card");
+        System.out.println("B: No more card");
+        Thread writeThread = new Thread(new Writer(this.socket,this));
         writeThread.start();
         try {
             writeThread.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-        Thread readCardThread = new Thread(new ReadCard(socket));
-        readCardThread.start();
-        try {
-            readCardThread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
     }
 }

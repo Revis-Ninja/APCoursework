@@ -6,8 +6,9 @@ import java.util.Scanner;
 
 public class Reader implements Runnable {
     private Socket socket;
-
-    public Reader(Socket socket){
+    private banker b;
+    public Reader(Socket socket, banker b){
+        this.b = b;
         this.socket = socket;
     }
     @Override
@@ -21,12 +22,20 @@ public class Reader implements Runnable {
 
                 String line = br.readLine();
                 System.out.println(line);
-                if (line.equals("END")){
+                if (line.equals("A")){
+                    Thread writeCardThread = new Thread(new WriteCard(socket, b));
+                    writeCardThread.start();
+                    try {
+                        writeCardThread.join();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if (line.equals("B")){
+                    System.out.println("The player`s turn is over");
                     break;
                 }
             }
-
-            //sc.close();
         }catch(IOException e) {
             e.printStackTrace();
         }
