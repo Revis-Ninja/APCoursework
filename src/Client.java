@@ -1,10 +1,8 @@
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.ObjectInputStream;
-import java.io.OutputStream;
 import java.net.Socket;
 
-public class Client extends Thread {
+public class Client{
     public static Socket socket;
 
     static {
@@ -14,18 +12,9 @@ public class Client extends Thread {
             e.printStackTrace();
         }
     }
-
-    ;
-
     public Client(){
-       // this.socket = socket;
-    }
 
-    @Override
-    public void run() {
-        //.getDealer().start();
     }
-
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         ObjectInputStream sc = new ObjectInputStream(socket.getInputStream());
 

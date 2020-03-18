@@ -9,7 +9,6 @@ public class Deck implements Serializable {
     ArrayList<card> burnCard = new ArrayList<>(52);
      int cardCount = 0;
 
-
     public Deck(){
         for(int i=0;i<4;i++){
             for (int j=0;j<13;j++){
@@ -18,5 +17,15 @@ public class Deck implements Serializable {
             }
         }
         Collections.shuffle(deck);
+    }
+
+    public void showDeck(){
+        int count = 0;
+        for (card c: deck
+             ) {
+            count++;
+            c.print();
+        }
+        System.out.println(count);
     }
 }
