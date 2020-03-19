@@ -1,5 +1,6 @@
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class player extends Thread implements java.io.Serializable{
@@ -54,9 +55,36 @@ public class player extends Thread implements java.io.Serializable{
 
         for (card c: check
              ) {
+            if ((c.num.trim().equals("J"))||(c.num.trim().equals("Q"))||(c.num.trim().equals("K"))){
+                points = points+10;
+            }
+            else if (c.num.trim().equals("")||(c.num.trim().equals("A"))){
+                continue;
+            }
+            else{
+                int temp = Integer.parseInt(c.num.trim());
+                points = points+temp;
+            }
+        }
+        int result = checkA(points,check);
+        System.out.println("------------Your final points are------------");
+        System.out.println(result);
+        return result;
+    }
+
+    public int checkA(int points, ArrayList<card> check){
+        int count = -1;
+        HashMap<Integer,String> countA = new HashMap<>();
+        countA.put(0,"the first A:");
+        countA.put(1,"the second A:");
+        countA.put(2,"the third A:");
+        countA.put(3,"the fourth A:");
+
+        for (card c: check){
             if (c.num.trim().equals("A")){
+                count++;
                 int temp = points;
-                System.out.println("There are two options for your points: ");
+                System.out.println("There are two options for your "+countA.get(count));
                 temp = temp+1;
                 System.out.println("1: "+temp);
                 temp = temp-1+11;
@@ -75,19 +103,7 @@ public class player extends Thread implements java.io.Serializable{
                         break;
                 }
             }
-            else if ((c.num.trim().equals("J"))||(c.num.trim().equals("Q"))||(c.num.trim().equals("K"))){
-                points = points+10;
-            }
-            else if (c.num.trim().equals("")){
-                continue;
-            }
-            else{
-                int temp = Integer.parseInt(c.num.trim());
-                points = points+temp;
-            }
         }
-        System.out.println("------------Your current points are------------");
-        System.out.println(points);
         return points;
     }
 
