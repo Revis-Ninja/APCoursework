@@ -44,6 +44,10 @@ public class banker extends player implements Serializable{
                card oneMore = dealOneCard();
                getOneMore(oneMore);
                showCard();
+                if (bust(checkPoint())){
+                    System.out.println("Your points exceed 21 points! BUST OUT!!");
+                    break;
+                }
             }
             if (line.equals("B")){
                 System.out.println("------------Dealer`s Hand Cards------------");

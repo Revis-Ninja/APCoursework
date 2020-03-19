@@ -42,8 +42,6 @@ public class player extends Thread implements java.io.Serializable{
         handcards[2].print();
     }
 
-
-
     public int checkPoint(){
         int points = 0;
         ArrayList<card> check = new ArrayList<>();
@@ -67,8 +65,10 @@ public class player extends Thread implements java.io.Serializable{
             }
         }
         int result = checkA(points,check);
+
         System.out.println("------------Your final points are------------");
         System.out.println(result);
+
         return result;
     }
 
@@ -106,6 +106,14 @@ public class player extends Thread implements java.io.Serializable{
         }
         return points;
     }
+    public boolean bust(int result){
+        boolean flag = false;
+        if (result>21){
+            flag = true;
+        }
+        return flag;
+    }
+
 
     @Override
     public void run() {
@@ -130,7 +138,7 @@ public class player extends Thread implements java.io.Serializable{
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        checkPoint();
+        //checkPoint();
 
     }
 }

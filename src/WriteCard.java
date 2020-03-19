@@ -20,7 +20,7 @@ public class WriteCard implements Runnable {
             System.out.println("one card is dealt");
 
             os.writeObject(b.dealOneCard());
-            os.writeObject(null);
+//            os.writeObject(null);
             os.flush();
 
         }catch(IOException e) {

@@ -4,7 +4,6 @@ public class stakes implements Serializable {
     int bet = 100;
 
     public stakes(){
-
     }
 
     public int Bet(String money){
@@ -16,6 +15,5 @@ public class stakes implements Serializable {
     public void showStakes(){
         System.out.println(bet);
     }
-
 
 }

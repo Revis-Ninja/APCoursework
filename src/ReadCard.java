@@ -16,12 +16,10 @@ public class ReadCard implements Runnable {
     public void run() {
         try {
             ObjectInputStream sc = new ObjectInputStream(this.socket.getInputStream());
-            card Card;
-            while((Card = (card) sc.readObject())!=null) {
+            card Card = (card) sc.readObject();
                 Card.print();
                 p.getOneMore(Card);
-            }
-
+                //p.checkPoint();
         }catch(ClassNotFoundException | IOException e) {
             e.printStackTrace();
         }

@@ -35,6 +35,10 @@ public class Reader implements Runnable {
                     System.out.println("The player`s turn is over");
                     break;
                 }
+                if (line.equals("end")){
+                    break;
+                }
+
             }
         }catch(IOException e) {
             e.printStackTrace();
