@@ -20,7 +20,8 @@ public class Client{
 
         banker bk = (banker)sc.readObject();
 
-        player p1 = new player(socket);
+        stakes stakes = new stakes();
+        player p1 = new player(socket,stakes);
         bk.dealCard(p1);
         p1.start();
 

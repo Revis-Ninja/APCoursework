@@ -34,6 +34,7 @@ public class Writer implements Runnable {
                     }
                     System.out.println("A: Add one more card");
                     System.out.println("B: No more card");
+                    System.out.println("C: Add card with raising the bet");
                     os.flush();
 
                 }
@@ -43,7 +44,28 @@ public class Writer implements Runnable {
                     break;
                 }
 
+                if (line.equals("C")){
+                    System.out.println("Plz bet");
+                    Scanner sc2 = new Scanner(System.in);
+                    String line2 = sc2.nextLine();
+                    p.stakes.Bet(line2);
+
+                    Thread readCardThread = new Thread(new ReadCard(socket,p));
+                    System.out.println("This is your extra card: ");
+                    readCardThread.start();
+                    try {
+                        readCardThread.join();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println("A: Add one more card");
+                    System.out.println("B: No more card");
+                    System.out.println("C: Add card with raising the bet");
+                    os.flush();
+                }
             }
+
+
         }catch(IOException e) {
             e.printStackTrace();
         }

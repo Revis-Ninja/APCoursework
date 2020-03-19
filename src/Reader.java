@@ -22,7 +22,7 @@ public class Reader implements Runnable {
 
                 String line = br.readLine();
                 System.out.println(line);
-                if (line.equals("A")){
+                if (line.equals("A")||line.equals("C")){
                     Thread writeCardThread = new Thread(new WriteCard(socket, b));
                     writeCardThread.start();
                     try {

@@ -1,7 +1,7 @@
 import java.io.Serializable;
 
 public class card implements Serializable {
-    //String suits;
+
     String num;
 
     public card(String num){
