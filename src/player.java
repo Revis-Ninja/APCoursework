@@ -14,6 +14,8 @@ public class player extends Thread implements java.io.Serializable{
 
     stakes stakes;
 
+    banker dealer = null;
+
     private final transient Socket socket;
 
     public player(Socket socket, stakes stakes){
@@ -22,6 +24,10 @@ public class player extends Thread implements java.io.Serializable{
         handcards[0]=card3;
         handcards[1]=card4;
         handcards[2]=card5;
+    }
+
+    public void setBanker(banker dealer){
+        this.dealer = dealer;
     }
 
     public void getHandCard(card card1, card card2){
@@ -66,7 +72,7 @@ public class player extends Thread implements java.io.Serializable{
         }
         int result = checkA(points,check);
 
-        System.out.println("------------Your final points are------------");
+        System.out.println("------------Your current points are------------");
         System.out.println(result);
 
         return result;
@@ -115,17 +121,19 @@ public class player extends Thread implements java.io.Serializable{
     }
 
 
+
     @Override
     public void run() {
         System.out.println(socket);
 
-        System.out.print("your stakes are ");
         stakes.showStakes();
 
         System.out.println("Plz bet");
         Scanner sc = new Scanner(System.in);
-        String line = sc.nextLine();
+        int line = sc.nextInt();
         stakes.Bet(line);
+
+
         System.out.println("Game starts. These are your hand cards");
         this.showCard();
         System.out.println("A: Add one more card");

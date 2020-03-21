@@ -23,7 +23,7 @@ public class Writer implements Runnable {
                 os.write(line + '\n');
                 os.flush();
                 if (line.equals("A")){
-                    p.checkPoint();
+
                     Thread readCardThread = new Thread(new ReadCard(socket,p));
                     System.out.println("This is your extra card: ");
                     readCardThread.start();
@@ -32,7 +32,8 @@ public class Writer implements Runnable {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    if (p.bust(p.checkPoint())){
+                    int playerTempScore = p.checkPoint();
+                    if (p.bust(playerTempScore)){
                         System.out.println("Your points exceed 21 points! BUST OUT!!");
                         os.write("end");
                         os.flush();
@@ -47,13 +48,16 @@ public class Writer implements Runnable {
 
                 if (line.equals("B")){
                     System.out.println("Your turn is over");
+                    int dealer = p.dealer.checkPoint();
+                    int punter = p.checkPoint();
+                    p.stakes.isGreater(dealer,punter);
                     break;
                 }
 
                 if (line.equals("C")){
                     System.out.println("Plz bet");
                     Scanner sc2 = new Scanner(System.in);
-                    String line2 = sc2.nextLine();
+                    int line2 = sc2.nextInt();
                     p.stakes.Bet(line2);
                     Thread readCardThread = new Thread(new ReadCard(socket,p));
                     System.out.println("This is your extra card: ");
@@ -63,12 +67,14 @@ public class Writer implements Runnable {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    if (p.bust(p.checkPoint())){
+                    int playerTempScore = p.checkPoint();
+                    if (p.bust(playerTempScore)){
                         System.out.println("Your points exceed 21 points! BUST OUT!!");
                         os.write("end");
                         os.flush();
                         break;
                     }
+
                     System.out.println("A: Add one more card");
                     System.out.println("B: No more card");
                     System.out.println("C: Add card with raising the bet");

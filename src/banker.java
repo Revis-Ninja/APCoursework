@@ -14,9 +14,6 @@ public class banker extends player implements Serializable{
         super(socket, new stakes());
         this.dealer = deck;
         this.socket = socket;
-//        handcards[0]=card3;
-//        handcards[1]=card4;
-//        handcards[2]=card5;
         dealerHand();
     }
 
@@ -52,7 +49,6 @@ public class banker extends player implements Serializable{
             if (line.equals("B")){
                 System.out.println("------------Dealer`s Hand Cards------------");
                 showCard();
-
                 checkPoint();
                 sc.close();
                 break;
