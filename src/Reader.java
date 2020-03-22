@@ -13,7 +13,8 @@ public class Reader implements Runnable {
     public void run() {
         try {
             int count = 0;
-            for (int i=0;i<b.totalPlayer;i++){
+
+            while(true){
                 BufferedReader br = new BufferedReader(
                         new InputStreamReader(
                                 socket.getInputStream(), StandardCharsets.UTF_8));
@@ -25,13 +26,15 @@ public class Reader implements Runnable {
                     writeCardThread.start();
                     try {
                         writeCardThread.join();
+
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }
-                if (line.equals("B")){
-                    System.out.println("The player "+count+"`s turn is over");
+                if (line.equals("B")||line.equals("bust")){
                     count++;
+                    System.out.println("The player "+count+"`s turn is over");
+
                     Thread readPlayer = new Thread(new readPlayer(b,socket));
                     readPlayer.start();
                     try {
@@ -39,10 +42,11 @@ public class Reader implements Runnable {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
+                    if (count == b.totalPlayer){
+                        break;
+                    }
                     //break;
                 }
-
-
             }
         }catch(IOException e) {
             e.printStackTrace();

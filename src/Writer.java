@@ -32,11 +32,17 @@ public class Writer implements Runnable {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
+
+
                     int playerTempScore = p.checkPoint();
                     if (p.bust(playerTempScore)){
                         System.out.println("Your points exceed 21 points! BUST OUT!!");
+                        os.write("bust"+'\n');
+                        os.flush();
                         break;
                     }
+
+
                     System.out.println("A: Add one more card");
                     System.out.println("B: No more card");
                     System.out.println("C: Add card with raising the bet");
@@ -45,10 +51,7 @@ public class Writer implements Runnable {
                 }
 
                 if (line.equals("B")){
-                        int punter = p.checkPoint();
-                        Thread writePlayer = new Thread(new writePlayer(p,socket));
-                        writePlayer.start();
-                        writePlayer.join();
+                        p.checkPoint();
                         break;
                 }
 
@@ -65,18 +68,26 @@ public class Writer implements Runnable {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
+
+
                     int playerTempScore = p.checkPoint();
                     if (p.bust(playerTempScore)){
                         System.out.println("Your points exceed 21 points! BUST OUT!!");
+                        os.write("bust"+'\n');
+                        os.flush();
                         break;
                     }
+
+
                     System.out.println("A: Add one more card");
                     System.out.println("B: No more card");
                     System.out.println("C: Add card with raising the bet");
                     os.flush();
                 }
             }
-
+            Thread writePlayer = new Thread(new writePlayer(p,socket));
+            writePlayer.start();
+            writePlayer.join();
 
         }catch(IOException | InterruptedException e) {
             e.printStackTrace();

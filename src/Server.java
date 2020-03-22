@@ -1,7 +1,6 @@
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 public class Server extends Thread {
@@ -12,7 +11,7 @@ public class Server extends Thread {
     }
 
 
-    public static void main(String[] args) throws IOException, ClassNotFoundException {
+    public static void main(String[] args) throws IOException{
         ServerSocket server = new ServerSocket(6666);
         Socket socket = server.accept();
 
