@@ -1,7 +1,10 @@
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStreamWriter;
 import java.net.Socket;
+import java.util.Scanner;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class Client{
     public static Socket socket;
@@ -21,12 +24,19 @@ public class Client{
         ObjectInputStream sc = new ObjectInputStream(socket.getInputStream());
         banker bk = (banker)sc.readObject();
 
-        stakes stakes = new stakes();
-        player p1 = new player(socket,stakes);
-        p1.setBanker(bk);
-        bk.dealCard(p1);
+        int playersNum = sc.read();
 
-        p1.start();
+        Lock lock = new Lock();
+
+        for (int i=1;i<playersNum+1;i++){
+
+            stakes stakes = new stakes();
+            player p = new player(socket,stakes, lock, i);
+            p.setBanker(bk);
+            bk.dealCard(p);
+            p.start();
+        }
+
 
 
     }

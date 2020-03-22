@@ -1,3 +1,4 @@
+import java.io.ObjectInputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,8 +13,10 @@ public class player extends Thread implements java.io.Serializable{
     card[] extraHandcards = new card[3];
     ArrayList<card> check;
     static int handCount = 0;
-
+    int position = 0;
+    private final Lock lock;
     int FinalScore = 0;
+
 
     stakes stakes;
 
@@ -21,7 +24,10 @@ public class player extends Thread implements java.io.Serializable{
 
     private final transient Socket socket;
 
-    public player(Socket socket, stakes stakes){
+    public player(Socket socket, stakes stakes, Lock lock, int position){
+
+        this.position = position;
+        this.lock = lock;
         this.stakes = stakes;
         this.socket = socket;
         extraHandcards[0]=card3;
@@ -127,9 +133,13 @@ public class player extends Thread implements java.io.Serializable{
 
     @Override
     public void run() {
+
+        synchronized (lock) {
+
+            System.out.println("PLAYER "+position+" is playing: ");
             System.out.println(socket);
 
-            System.out.println("-----------Your current stakes are "+stakes.Stakes+"--------------");
+            System.out.println("-----------Your current stakes are " + stakes.Stakes + "--------------");
 
             System.out.println("Plz bet");
             Scanner sc = new Scanner(System.in);
@@ -150,5 +160,5 @@ public class player extends Thread implements java.io.Serializable{
                 e.printStackTrace();
             }
         }
-
+    }
 }

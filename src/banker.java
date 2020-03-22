@@ -5,12 +5,11 @@ import java.util.*;
 
 public class banker extends player implements Serializable{
     public final transient Socket socket;
-
+    int totalPlayer = 0;
     Deck dealer;
     HashMap<player,Integer> PointStorage = new HashMap<>();
-    stakes stakes = new stakes();
     public banker(Socket socket, Deck deck){
-        super(socket, new stakes());
+        super(socket, new stakes(), new Lock(), 0);
         this.dealer = deck;
         this.socket = socket;
 
@@ -65,13 +64,7 @@ public class banker extends player implements Serializable{
                 }
             }
 
-            Thread readPlayer = new Thread(new readPlayer(this,socket));
-            readPlayer.start();
-        try {
-            readPlayer.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
         Compare(FinalScore);
 
         // autoPlay(result);
@@ -183,6 +176,9 @@ public class banker extends player implements Serializable{
 
         dealer.burnCard.add(card1);
         dealer.burnCard.add(card2);
+    }
+    public void setTotalPlayer(int totalPlayer){
+        this.totalPlayer = totalPlayer;
     }
 
     public void showDealerDeck(){

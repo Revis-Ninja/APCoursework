@@ -1,7 +1,6 @@
 import java.io.*;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
-import java.util.Scanner;
 
 public class Reader implements Runnable {
     private Socket socket;
@@ -13,8 +12,8 @@ public class Reader implements Runnable {
     @Override
     public void run() {
         try {
-
-            while (true) {
+            int count = 0;
+            for (int i=0;i<b.totalPlayer;i++){
                 BufferedReader br = new BufferedReader(
                         new InputStreamReader(
                                 socket.getInputStream(), StandardCharsets.UTF_8));
@@ -31,12 +30,18 @@ public class Reader implements Runnable {
                     }
                 }
                 if (line.equals("B")){
-                    System.out.println("The player`s turn is over");
-                    break;
+                    System.out.println("The player "+count+"`s turn is over");
+                    count++;
+                    Thread readPlayer = new Thread(new readPlayer(b,socket));
+                    readPlayer.start();
+                    try {
+                        readPlayer.join();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    //break;
                 }
-                if (line.equals("end")){
-                    break;
-                }
+
 
             }
         }catch(IOException e) {

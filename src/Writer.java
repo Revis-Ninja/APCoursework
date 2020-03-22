@@ -35,8 +35,6 @@ public class Writer implements Runnable {
                     int playerTempScore = p.checkPoint();
                     if (p.bust(playerTempScore)){
                         System.out.println("Your points exceed 21 points! BUST OUT!!");
-                        os.write("end");
-                        os.flush();
                         break;
                     }
                     System.out.println("A: Add one more card");
@@ -70,11 +68,8 @@ public class Writer implements Runnable {
                     int playerTempScore = p.checkPoint();
                     if (p.bust(playerTempScore)){
                         System.out.println("Your points exceed 21 points! BUST OUT!!");
-                        os.write("end");
-                        os.flush();
                         break;
                     }
-
                     System.out.println("A: Add one more card");
                     System.out.println("B: No more card");
                     System.out.println("C: Add card with raising the bet");
