@@ -13,6 +13,8 @@ public class player extends Thread implements java.io.Serializable{
     ArrayList<card> check;
     static int handCount = 0;
 
+    int FinalScore = 0;
+
     stakes stakes;
 
     banker dealer = null;
@@ -77,6 +79,7 @@ public class player extends Thread implements java.io.Serializable{
             showCard();
         }
 
+        FinalScore = result;
         return result;
     }
 
@@ -124,9 +127,6 @@ public class player extends Thread implements java.io.Serializable{
 
     @Override
     public void run() {
-
-
-
             System.out.println(socket);
 
             stakes.showStakes();

@@ -1,4 +1,6 @@
 import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.Scanner;
@@ -20,7 +22,7 @@ public class Writer implements Runnable {
 
             while(true){
                 String line = sc.nextLine();
-                os.write(line + '\n');
+                os.write(line+'\n');
                 os.flush();
                 if (line.equals("A")){
 
@@ -47,10 +49,9 @@ public class Writer implements Runnable {
                 }
 
                 if (line.equals("B")){
-                    System.out.println("Your turn is over");
-                        int dealer = p.dealer.checkPoint();
                         int punter = p.checkPoint();
-                        p.stakes.isGreater(dealer, punter);
+                        p.dealer.putFinishedPlayer(p,punter);
+                        System.out.println("Your turn is over");
                         break;
 
                 }

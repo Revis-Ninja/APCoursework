@@ -8,8 +8,7 @@ public class banker extends player implements Serializable{
 
     Deck dealer;
 
-    public static final Object lock = new Object();
-    boolean isFinished = true;
+    HashMap<player,Integer> PointStorage = new HashMap<>();
 
     public banker(Socket socket, Deck deck){
         super(socket, new stakes());
@@ -20,16 +19,9 @@ public class banker extends player implements Serializable{
 
     @Override
     public void run() {
-
-
-        System.out.println(socket);
-
-
-
+            System.out.println(socket);
             this.showCard();
             System.out.println("------------Player`s Action------------");
-
-
             Thread readThread = new Thread(new Reader(socket, this));
             readThread.start();
             try {
@@ -37,56 +29,65 @@ public class banker extends player implements Serializable{
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-
-
             System.out.println("------------Dealer`s Action------------");
-            while (true) {
-                System.out.println("A: Add one more card");
-                System.out.println("B: No more card");
-                Scanner sc = new Scanner(System.in);
-                String line = sc.nextLine();
-                if (line.equals("A")) {
-                    System.out.println("This is your extra card: ");
-                    card oneMore = dealOneCard();
-                    getOneMore(oneMore);
-                    oneMore.print();
-                    System.out.println("------------Dealer`s Hand Cards------------");
-                    showCard();
-                    if (bust(checkPoint())) {
-                        System.out.println("Your points exceed 21 points! BUST OUT!!");
-                        break;
-                    }
-                }
-                if (line.equals("B")) {
-                    System.out.println("------------Dealer`s Hand Cards------------");
-                    showCard();
-                    int resultWithoutA = this.checkPoint();
-                    int result = checkA(resultWithoutA);
-                    System.out.println("------------Your current points are------------");
-                    System.out.println(result);
-
-                    if (result == 21) {
-                        System.out.println("BLACKJACK !!! You earn double!!");
-                    }
-                    break;
-                }
-            }
+            int result = checkPoint();
+            autoPlay(result);
 
 
+
+//            while (true) {
+//                System.out.println("A: Add one more card");
+//                System.out.println("B: No more card");
+//                Scanner sc = new Scanner(System.in);
+//                String line = sc.nextLine();
+//                if (line.equals("A")) {
+//                    System.out.println("This is your extra card: ");
+//                    card oneMore = dealOneCard();
+//                    getOneMore(oneMore);
+//                    oneMore.print();
+//                    System.out.println("------------Dealer`s Hand Cards------------");
+//                    showCard();
+//                    if (bust(checkPoint())) {
+//                        System.out.println("Your points exceed 21 points! BUST OUT!!");
+//                        break;
+//                    }
+//                }
+//                if (line.equals("B")) {
+//                    System.out.println("------------Dealer`s Hand Cards------------");
+//                    showCard();
+//                    int resultWithoutA = this.checkPoint();
+//                    int result = checkA(resultWithoutA);
+//                    System.out.println("------------Your current points are------------");
+//                    System.out.println(result);
+//
+//                    if (result == 21) {
+//                        System.out.println("BLACKJACK !!! You earn double!!");
+//                    }
+//                    break;
+//                }
+//            }
 
     }
 
+
+    public void autoPlay(int points){
+        showCard();
+        if (points<17){
+            getOneMore(this.dealOneCard());
+            autoPlay(this.checkPoint());
+        }
+    }
 
 
     @Override
     public int checkPoint(){
         int points = 0;
-        ArrayList<card> check = new ArrayList<>();
-        check.add(card1);
-        check.add(card2);
-        check.add(extraHandcards[0]);
-        check.add(extraHandcards[1]);
-        check.add(extraHandcards[2]);
+//        ArrayList<card> check = new ArrayList<>();
+//        check.add(card1);
+//        check.add(card2);
+//        check.add(extraHandcards[0]);
+//        check.add(extraHandcards[1]);
+//        check.add(extraHandcards[2]);
 
         for (card c: check
         ) {
@@ -101,7 +102,8 @@ public class banker extends player implements Serializable{
                 points = points+temp;
             }
         }
-        return points;
+
+        return checkA(points);
     }
     @Override
     public int checkA(int points){
@@ -167,6 +169,10 @@ public class banker extends player implements Serializable{
 
         dealer.burnCard.add(card1);
         dealer.burnCard.add(card2);
+    }
+
+    public void putFinishedPlayer(player p, int score){
+        PointStorage.put(p,score);
     }
 
     public void showDealerDeck(){

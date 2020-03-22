@@ -1,7 +1,6 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 public class Reader implements Runnable {
@@ -14,10 +13,11 @@ public class Reader implements Runnable {
     @Override
     public void run() {
         try {
+            InputStream incoming = socket.getInputStream();
             while (true) {
                 BufferedReader br = new BufferedReader(
                         new InputStreamReader(
-                                socket.getInputStream(), "UTF-8"));
+                                incoming, StandardCharsets.UTF_8));
 
                 String line = br.readLine();
                 System.out.println(line);
