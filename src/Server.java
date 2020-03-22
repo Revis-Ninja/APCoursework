@@ -35,6 +35,7 @@ public class Server extends Thread {
         ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
         os.writeObject(bk);
         os.flush();
+
         bk.start();
 
 

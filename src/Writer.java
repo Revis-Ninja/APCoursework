@@ -4,7 +4,7 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class Writer implements Runnable {
-    private Socket socket;
+    private final Socket socket;
     private player p;
 
     public Writer(Socket socket, player p){
@@ -48,10 +48,11 @@ public class Writer implements Runnable {
 
                 if (line.equals("B")){
                     System.out.println("Your turn is over");
-                    int dealer = p.dealer.checkPoint();
-                    int punter = p.checkPoint();
-                    p.stakes.isGreater(dealer,punter);
-                    break;
+                        int dealer = p.dealer.checkPoint();
+                        int punter = p.checkPoint();
+                        p.stakes.isGreater(dealer, punter);
+                        break;
+
                 }
 
                 if (line.equals("C")){
@@ -80,7 +81,6 @@ public class Writer implements Runnable {
                     System.out.println("C: Add card with raising the bet");
                     os.flush();
                 }
-
             }
 
 

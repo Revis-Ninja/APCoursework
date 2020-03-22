@@ -19,7 +19,6 @@ public class ReadCard implements Runnable {
             card Card = (card) sc.readObject();
                 Card.print();
                 p.getOneMore(Card);
-                //p.checkPoint();
         }catch(ClassNotFoundException | IOException e) {
             e.printStackTrace();
         }

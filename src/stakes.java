@@ -8,7 +8,6 @@ public class stakes implements Serializable {
     }
 
     public int Bet(int money){
-//        Stakes = Stakes - money;
         bet = bet + money;
         return bet;
     }
@@ -18,8 +17,9 @@ public class stakes implements Serializable {
     }
 
     public void win(){
-        Stakes = Stakes - bet;
+        Stakes = Stakes + bet;
     }
+
 
     public void blackJack(){
         Stakes = Stakes + bet*2;
@@ -36,9 +36,12 @@ public class stakes implements Serializable {
                 win();
             }
             result = true;
-        }else {
+        }else if (dealer > player){
             System.out.println("---------------You lose!----------------");
             lose();
+        }else {
+            System.out.println("---------------Tie!----------------");
+            clearBet();
         }
         showStakes();
         return result;

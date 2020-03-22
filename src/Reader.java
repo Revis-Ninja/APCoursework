@@ -14,7 +14,6 @@ public class Reader implements Runnable {
     @Override
     public void run() {
         try {
-            //Scanner sc = new Scanner(this.socket.getInputStream());
             while (true) {
                 BufferedReader br = new BufferedReader(
                         new InputStreamReader(

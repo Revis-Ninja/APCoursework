@@ -9,7 +9,8 @@ public class player extends Thread implements java.io.Serializable{
     card card3 = new card("");
     card card4 = new card("");
     card card5 = new card("");
-    card[] handcards = new card[3];
+    card[] extraHandcards = new card[3];
+    ArrayList<card> check;
     static int handCount = 0;
 
     stakes stakes;
@@ -21,9 +22,10 @@ public class player extends Thread implements java.io.Serializable{
     public player(Socket socket, stakes stakes){
         this.stakes = stakes;
         this.socket = socket;
-        handcards[0]=card3;
-        handcards[1]=card4;
-        handcards[2]=card5;
+        extraHandcards[0]=card3;
+        extraHandcards[1]=card4;
+        extraHandcards[2]=card5;
+        check = new ArrayList<>();
     }
 
     public void setBanker(banker dealer){
@@ -33,30 +35,26 @@ public class player extends Thread implements java.io.Serializable{
     public void getHandCard(card card1, card card2){
         this.card1 = card1;
         this.card2 = card2;
+        check.add(card1);
+        check.add(card2);
     }
 
     public void getOneMore(card cardExtra){
-        handcards[handCount] = cardExtra;
+        extraHandcards[handCount] = cardExtra;
+        check.add(extraHandcards[handCount]);
         handCount++;
     }
 
     public void showCard(){
         card1.print();
         card2.print();
-        handcards[0].print();
-        handcards[1].print();
-        handcards[2].print();
+        extraHandcards[0].print();
+        extraHandcards[1].print();
+        extraHandcards[2].print();
     }
 
     public int checkPoint(){
         int points = 0;
-        ArrayList<card> check = new ArrayList<>();
-        check.add(card1);
-        check.add(card2);
-        check.add(handcards[0]);
-        check.add(handcards[1]);
-        check.add(handcards[2]);
-
         for (card c: check
              ) {
             if ((c.num.trim().equals("J"))||(c.num.trim().equals("Q"))||(c.num.trim().equals("K"))){
@@ -70,15 +68,19 @@ public class player extends Thread implements java.io.Serializable{
                 points = points+temp;
             }
         }
-        int result = checkA(points,check);
+        int result = checkA(points);
 
         System.out.println("------------Your current points are------------");
         System.out.println(result);
 
+        if (result==21){
+            showCard();
+        }
+
         return result;
     }
 
-    public int checkA(int points, ArrayList<card> check){
+    public int checkA(int points){
         int count = -1;
         HashMap<Integer,String> countA = new HashMap<>();
         countA.put(0,"the first A:");
@@ -101,11 +103,9 @@ public class player extends Thread implements java.io.Serializable{
                 switch (line){
                     case "1":
                         points = points+1;
-                        System.out.println("your current points: "+points);
                         break;
                     case "2":
                         points = points+11;
-                        System.out.println("your current points: "+points);
                         break;
                 }
             }
@@ -124,29 +124,31 @@ public class player extends Thread implements java.io.Serializable{
 
     @Override
     public void run() {
-        System.out.println(socket);
-
-        stakes.showStakes();
-
-        System.out.println("Plz bet");
-        Scanner sc = new Scanner(System.in);
-        int line = sc.nextInt();
-        stakes.Bet(line);
 
 
-        System.out.println("Game starts. These are your hand cards");
-        this.showCard();
-        System.out.println("A: Add one more card");
-        System.out.println("B: No more card");
-        System.out.println("C: Add card with raising the bet");
-        Thread writeThread = new Thread(new Writer(this.socket,this));
-        writeThread.start();
-        try {
-            writeThread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+
+            System.out.println(socket);
+
+            stakes.showStakes();
+
+            System.out.println("Plz bet");
+            Scanner sc = new Scanner(System.in);
+            int line = sc.nextInt();
+            stakes.Bet(line);
+
+
+            System.out.println("Game starts.");
+            this.showCard();
+            System.out.println("A: Add one more card");
+            System.out.println("B: No more card");
+            System.out.println("C: Add card with raising the bet");
+            Thread writeThread = new Thread(new Writer(this.socket, this));
+            writeThread.start();
+            try {
+                writeThread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
-        //checkPoint();
 
-    }
 }
