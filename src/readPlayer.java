@@ -16,6 +16,7 @@ public class readPlayer implements Runnable{
         try {
             ObjectInputStream sc = new ObjectInputStream(this.socket.getInputStream());
             player p = (player) sc.readObject();
+
             banker.putFinishedPlayer(p,p.FinalScore);
             System.out.println(banker.PointStorage);
         }catch(ClassNotFoundException | IOException e) {

@@ -29,7 +29,7 @@ public class stakes implements Serializable {
     public boolean isGreater(int dealer, int player, int position){
         boolean result = false;
         String PLAYER = "player"+position;
-        if (dealer < player) {
+        if ((dealer < player&&player<=21)||(dealer>21&&player<=21)) {
             if (player==21){
                 System.out.println("BLACKJACK !!!"+PLAYER+" earn double!!");
                 blackJack();
@@ -38,14 +38,16 @@ public class stakes implements Serializable {
                 win();
             }
             result = true;
-        }else if (dealer > player){
-            System.out.println("---------------"+PLAYER+" lose!----------------");
+        }if ((dealer > player && dealer<=21)||(player>21 && dealer<=21)){
+
             if (dealer == 21){
+                System.out.println("BLACKJACK !!"+PLAYER+" lost double!!");
                 loseBlackJack();
             }else {
+                System.out.println("---------------"+PLAYER+" lose!----------------");
                 lose();
             }
-        }else {
+        }if ((dealer==player && dealer<=21)||(dealer>21 && player>21)){
             System.out.println("---------------Tie!----------------");
             clearBet();
         }

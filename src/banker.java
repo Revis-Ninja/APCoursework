@@ -71,11 +71,10 @@ public class banker extends player implements Serializable{
     }
 
     public void Compare(int FinalScore){
-        int playerPosition=0;
+
         for (player p: this.PointStorage.keySet()
         ) {
-            playerPosition++;
-            p.stakes.isGreater(FinalScore, p.FinalScore, playerPosition);
+            p.stakes.isGreater(FinalScore, p.FinalScore, p.position);
         }
     }
 
