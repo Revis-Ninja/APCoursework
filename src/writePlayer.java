@@ -2,24 +2,24 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-public class WriteCard implements Runnable {
+public class writePlayer implements Runnable {
+    Socket socket;
+    player player;
 
-    private Socket socket;
-    private banker b;
-
-    public WriteCard(Socket socket, banker b){
-        this.b = b;
+    public writePlayer(player player, Socket socket){
+        this.player = player;
         this.socket = socket;
     }
+
     @Override
     public void run() {
         try {
 
             ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
 
-            System.out.println("one card is dealt");
+            System.out.println("player final score has sent");
 
-            os.writeObject(b.dealOneCard());
+            os.writeObject(player);
             os.flush();
 
         }catch(IOException e) {

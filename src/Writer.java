@@ -1,6 +1,4 @@
 import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.Scanner;
@@ -50,10 +48,10 @@ public class Writer implements Runnable {
 
                 if (line.equals("B")){
                         int punter = p.checkPoint();
-                        p.dealer.putFinishedPlayer(p,punter);
-                        System.out.println("Your turn is over");
+                        Thread writePlayer = new Thread(new writePlayer(p,socket));
+                        writePlayer.start();
+                        writePlayer.join();
                         break;
-
                 }
 
                 if (line.equals("C")){
@@ -85,7 +83,7 @@ public class Writer implements Runnable {
             }
 
 
-        }catch(IOException e) {
+        }catch(IOException | InterruptedException e) {
             e.printStackTrace();
         }
     }

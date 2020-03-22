@@ -129,7 +129,7 @@ public class player extends Thread implements java.io.Serializable{
     public void run() {
             System.out.println(socket);
 
-            stakes.showStakes();
+            System.out.println("-----------Your current stakes are "+stakes.Stakes+"--------------");
 
             System.out.println("Plz bet");
             Scanner sc = new Scanner(System.in);

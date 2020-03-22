@@ -24,35 +24,37 @@ public class stakes implements Serializable {
     public void blackJack(){
         Stakes = Stakes + bet*2;
     }
+    public void loseBlackJack(){ Stakes = Stakes - bet*2;}
 
-    public boolean isGreater(int dealer, int player){
+    public boolean isGreater(int dealer, int player, int position){
         boolean result = false;
+        String PLAYER = "player"+position;
         if (dealer < player) {
             if (player==21){
-                System.out.println("BLACKJACK !!! You earn double!!");
+                System.out.println("BLACKJACK !!!"+PLAYER+" earn double!!");
                 blackJack();
             }else {
-                System.out.println("---------------You win!--------------");
+                System.out.println("---------------"+PLAYER+" win!--------------");
                 win();
             }
             result = true;
         }else if (dealer > player){
-            System.out.println("---------------You lose!----------------");
-            lose();
+            System.out.println("---------------"+PLAYER+" lose!----------------");
+            if (dealer == 21){
+                loseBlackJack();
+            }else {
+                lose();
+            }
         }else {
             System.out.println("---------------Tie!----------------");
             clearBet();
         }
-        showStakes();
+        System.out.println("-----------"+PLAYER+" current stakes are "+Stakes+"--------------");
         return result;
     }
 
     public void clearBet(){
         this.bet = 0;
-    }
-
-    public void showStakes(){
-        System.out.println("-----------Your current stakes are "+Stakes+"--------------");
     }
 
 }

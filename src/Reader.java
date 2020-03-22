@@ -13,11 +13,11 @@ public class Reader implements Runnable {
     @Override
     public void run() {
         try {
-            InputStream incoming = socket.getInputStream();
+
             while (true) {
                 BufferedReader br = new BufferedReader(
                         new InputStreamReader(
-                                incoming, StandardCharsets.UTF_8));
+                                socket.getInputStream(), StandardCharsets.UTF_8));
 
                 String line = br.readLine();
                 System.out.println(line);

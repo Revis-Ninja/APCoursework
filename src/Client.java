@@ -18,18 +18,13 @@ public class Client{
     }
     public static void main(String[] args) throws IOException, ClassNotFoundException {
 
-
-
         ObjectInputStream sc = new ObjectInputStream(socket.getInputStream());
-
         banker bk = (banker)sc.readObject();
-
 
         stakes stakes = new stakes();
         player p1 = new player(socket,stakes);
         p1.setBanker(bk);
         bk.dealCard(p1);
-
 
         p1.start();
 
