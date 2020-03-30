@@ -10,11 +10,18 @@ public class player extends Thread implements java.io.Serializable{
     card card3 = new card("");
     card card4 = new card("");
     card card5 = new card("");
+
+    //除了两个手牌，额外的可能发出来的三张牌放进一个数组里
     card[] extraHandcards = new card[3];
+    //辅助变量
+    int handCount = -1;
+    //五个卡牌放进arraylist里，方便算分
     ArrayList<card> check;
-    static int handCount = 0;
+    //位置，是方便庄家和玩家比分的
     int position = 0;
+
     private final Lock lock;
+    //存最终玩家的卡牌分数
     int FinalScore = 0;
 
 
@@ -48,9 +55,10 @@ public class player extends Thread implements java.io.Serializable{
     }
 
     public void getOneMore(card cardExtra){
+        handCount++;
         extraHandcards[handCount] = cardExtra;
         check.add(extraHandcards[handCount]);
-        handCount++;
+
     }
 
     public void showCard(){
@@ -121,6 +129,7 @@ public class player extends Thread implements java.io.Serializable{
         }
         return points;
     }
+    //如果超过21点，就爆牌
     public boolean bust(int result){
         boolean flag = false;
         if (result>21){
@@ -144,6 +153,7 @@ public class player extends Thread implements java.io.Serializable{
             System.out.println("Plz bet");
             Scanner sc = new Scanner(System.in);
             int line = sc.nextInt();
+
             stakes.Bet(line);
 
 
