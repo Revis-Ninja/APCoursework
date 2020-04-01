@@ -6,9 +6,10 @@ import java.util.*;
 public class banker extends player implements Serializable{
     public final transient Socket socket;
     int totalPlayer = 0;
-    Deck dealer; //玩游戏的牌组，里面有52张扑克牌
+    //a deck of 52 pokers
+    Deck dealer;
 
-    //这个是存储每个玩家以及玩家对应的卡牌分数，存在一个hashmap里面方便庄家一个个的去比较
+    //this hashmap is to store each player and his own final score
     HashMap<player,Integer> PointStorage = new HashMap<>();
 
     public banker(Socket socket, Deck deck){
@@ -21,9 +22,9 @@ public class banker extends player implements Serializable{
 
     @Override
     public void run() {
-            System.out.println(socket);
-            this.showCard();
-        //记录玩家的每个选择以及状态
+//            System.out.println(socket);
+
+        //record each player`s action
             System.out.println("------------Player`s Action------------");
             Thread readThread = new Thread(new Reader(socket, this));
             readThread.start();
@@ -32,9 +33,10 @@ public class banker extends player implements Serializable{
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        //所有玩家的线程结束后，开始庄家的回合
-            System.out.println("------------Dealer`s Action------------");
 
+        //After all players finish their rounds, dealer play his own
+            System.out.println("------------Dealer`s Action------------");
+            this.showCard();
 
             while (true) {
                 System.out.println("A: Add one more card");
@@ -65,6 +67,7 @@ public class banker extends player implements Serializable{
                     if (resultWithA == 21) {
                         System.out.println("BLACKJACK !!! You earn double!!");
                     }
+
                     break;
                 }
             }
@@ -76,14 +79,15 @@ public class banker extends player implements Serializable{
     }
 
     public void Compare(int FinalScore){
-        //按顺序跟每个玩家比较分数
+        //compare with each player in order
         for (player p: this.PointStorage.keySet()
         ) {
             p.stakes.isGreater(FinalScore, p.FinalScore, p.position);
         }
     }
 
-    //这个方法是把玩家和他的最终分数放进hashmap里
+
+    //this method is to store player and his final score
     public void putFinishedPlayer(player p, int score){
         PointStorage.put(p,score);
     }
@@ -96,7 +100,7 @@ public class banker extends player implements Serializable{
         }
     }
 
-    //算除了A卡牌的其他卡牌的分数
+    //calculate points of hand cards excluding Ace
     @Override
     public int checkPoint(){
         int points = 0;
@@ -117,7 +121,7 @@ public class banker extends player implements Serializable{
         FinalScore = points;
         return points;
     }
-    //算A卡牌的分数
+    //Calculate Ace
     @Override
     public int checkA(int points){
         int count = -1;
@@ -152,7 +156,7 @@ public class banker extends player implements Serializable{
         return points;
     }
 
-    //给玩家发手牌
+    //deal hand cards to players
     public void dealCard(player punter){
         Collections.shuffle(dealer.deck);
         card c1 = dealer.deck.pop();
@@ -163,14 +167,15 @@ public class banker extends player implements Serializable{
         dealer.burnCard.add(c2);
 
     }
-    //发额外的一张牌
+
+    //deal one more extra card
     public card dealOneCard(){
         dealer.cardCount++;
         card c = dealer.deck.pop();
         dealer.burnCard.add(c);
         return c;
     }
-    //给庄家自己发手牌
+    //deal hand cards to banker himself
     public void dealerHand(){
         card1 = dealer.deck.pop();
         card2 = dealer.deck.pop();

@@ -11,19 +11,18 @@ public class player extends Thread implements java.io.Serializable{
     card card4 = new card("");
     card card5 = new card("");
 
-    //除了两个手牌，额外的可能发出来的三张牌放进一个数组里
+    //except initial two hand cards, all of extra hand cards are stored in an array
     card[] extraHandcards = new card[3];
-    //辅助变量
+    //helper integer to position the extra hand card
     int handCount = -1;
-    //五个卡牌放进arraylist里，方便算分
+    //finally, 5 hand cards are put together to calculate the points.
     ArrayList<card> check;
-    //位置，是方便庄家和玩家比分的
+    //player`s position, which is used for banker to compare in order.
     int position = 0;
-
+    //to synchronize run method
     private final Lock lock;
-    //存最终玩家的卡牌分数
+    //store player`s final score
     int FinalScore = 0;
-
 
     stakes stakes;
 
@@ -68,7 +67,7 @@ public class player extends Thread implements java.io.Serializable{
         extraHandcards[1].print();
         extraHandcards[2].print();
     }
-
+    //calculate points of hand cards excluding Ace
     public int checkPoint(){
         int points = 0;
         for (card c: check
@@ -96,7 +95,7 @@ public class player extends Thread implements java.io.Serializable{
         FinalScore = result;
         return result;
     }
-
+    //Calculate Ace
     public int checkA(int points){
         int count = -1;
         HashMap<Integer,String> countA = new HashMap<>();
@@ -129,7 +128,8 @@ public class player extends Thread implements java.io.Serializable{
         }
         return points;
     }
-    //如果超过21点，就爆牌
+
+    //bust out if exceed 21
     public boolean bust(int result){
         boolean flag = false;
         if (result>21){
@@ -146,7 +146,7 @@ public class player extends Thread implements java.io.Serializable{
         synchronized (lock) {
 
             System.out.println("PLAYER "+position+" is playing: ");
-            System.out.println(socket);
+//            System.out.println(socket);
 
             System.out.println("-----------Your current stakes are " + stakes.Stakes + "--------------");
 

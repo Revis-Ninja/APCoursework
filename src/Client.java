@@ -58,12 +58,13 @@ public class Client {
 
     }
     public static void main(String[] args) throws IOException, ClassNotFoundException {
-        //接收庄家的对象
+
+        //receive the banker object from server.main
         ObjectInputStream sc = new ObjectInputStream(socket.getInputStream());
         banker bk = (banker)sc.readObject();
-        //接收玩家数量
+        //receive the number of players involved from server.main
         int playersNum = sc.read();
-        //这个锁是为了传进player里面，进行线程一个一个执行的操作
+        //The lock is for player to synchronize the run method
         Lock lock = new Lock();
 
 //        new Client().launchFrame();

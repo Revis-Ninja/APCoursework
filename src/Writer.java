@@ -23,7 +23,7 @@ public class Writer implements Runnable {
                 os.write(line+'\n');
                 os.flush();
                 if (line.equals("A")){
-
+                    //If A, ready to receive extra card.
                     Thread readCardThread = new Thread(new ReadCard(socket,p));
                     System.out.println("This is your extra card: ");
                     readCardThread.start();
@@ -60,6 +60,8 @@ public class Writer implements Runnable {
                     Scanner sc2 = new Scanner(System.in);
                     int line2 = sc2.nextInt();
                     p.stakes.Bet(line2);
+
+                    //If C, ready to receive extra card.
                     Thread readCardThread = new Thread(new ReadCard(socket,p));
                     System.out.println("This is your extra card: ");
                     readCardThread.start();
@@ -85,6 +87,8 @@ public class Writer implements Runnable {
                     os.flush();
                 }
             }
+
+            //if all finished, send player and his final score to banker
             Thread writePlayer = new Thread(new writePlayer(p,socket));
             writePlayer.start();
             writePlayer.join();

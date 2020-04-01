@@ -22,6 +22,8 @@ public class Reader implements Runnable {
                 String line = br.readLine();
                 System.out.println(line);
                 if (line.equals("A")||line.equals("C")){
+
+                    //if A or C, send a Card object to player
                     Thread writeCardThread = new Thread(new WriteCard(socket, b));
                     writeCardThread.start();
                     try {
@@ -35,6 +37,7 @@ public class Reader implements Runnable {
                     count++;
                     System.out.println("The player "+count+"`s turn is over");
 
+                    //if player is done, then receive the player object and his final score
                     Thread readPlayer = new Thread(new readPlayer(b,socket));
                     readPlayer.start();
                     try {
@@ -43,9 +46,9 @@ public class Reader implements Runnable {
                         e.printStackTrace();
                     }
                     if (count == b.totalPlayer){
+                        //if all players are done, break the loop
                         break;
                     }
-                    //break;
                 }
             }
         }catch(IOException e) {
